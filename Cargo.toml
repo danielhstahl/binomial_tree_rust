@@ -1,0 +1,10 @@
+[package]
+name = "binomial_tree"
+version = "0.1.0"
+authors = ["b0gx3 <daniel.stahl@regions.com>"]
+
+[dependencies]
+
+[dev-dependencies]
+black_scholes = "0.2.3"
+approx = "0.2.0"
