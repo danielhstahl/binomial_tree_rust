@@ -62,6 +62,7 @@ pub fn compute_price_raw(
         let height=get_height(n_time_periods, height_index);
         let w=compute_skeleton(y0, height, sqrt_dt);
         let underlying=sigma_inverse(maturity, w, dt, n_time_periods);
+        
         payoff(maturity, underlying, dt, n_time_periods)
     }).collect();
 
@@ -75,7 +76,7 @@ pub fn compute_price_raw(
             let height=get_height(width, height_index);
             let w=compute_skeleton(y0, height, sqrt_dt);
             let underlying=sigma_inverse(t, w, dt, width);
-            
+
             let expectation=compute_expectation(
                 compute_p(
                     alpha_over_sigma(t, underlying, dt, width),
@@ -115,7 +116,7 @@ mod tests {
         let py_off=|_t:f64, underlying:f64, _dt:f64, _width:usize| if strike>underlying {strike-underlying} else {0.0};
         let disc=|_t:f64, _underlying:f64, dt:f64, _width:usize| (-r*dt).exp();
         let now = std::time::Instant::now();
-        let price=compute_price(
+        let price=compute_price_raw(
             &alpha_div_sigma,
             &sigma_pr,
             &sigma_inv,
@@ -128,6 +129,67 @@ mod tests {
         );
         let new_now=std::time::Instant::now();
         println!("Binomial tree time: {:?}", new_now.duration_since(now));
-        assert_abs_diff_eq!(price, black_scholes::call(s0, strike, r, sig, maturity), epsilon=0.0001);
+        assert_abs_diff_eq!(price, black_scholes::put(s0, strike, r, sig, maturity), epsilon=0.001);
+    }
+    #[test]
+    fn binomial_approx_1_period() {
+        let r=0.00;
+        let sig=0.3;
+        let s0=50.0 as f64;
+        let maturity=1.0;
+        let strike=50.0;
+        let alpha_div_sigma=|_t:f64, _underlying:f64, _dt:f64, _width:usize| r/sig;
+        let sigma_pr=|_t:f64, _underlying:f64, _dt:f64, _width:usize| sig;
+        let sigma_inv=|_t:f64, x:f64, _dt:f64, _width:usize| (x*sig).exp();
+        let py_off=|_t:f64, underlying:f64, _dt:f64, _width:usize| if strike>underlying {strike-underlying} else {0.0};
+        let disc=|_t:f64, _underlying:f64, dt:f64, _width:usize| (-r*dt).exp();
+        let price=compute_price_raw(
+            &alpha_div_sigma,
+            &sigma_pr,
+            &sigma_inv,
+            &py_off,
+            &disc,
+            s0.ln()/sig,
+            maturity,
+            1,
+            false
+        );
+        assert_abs_diff_eq!(price, 7.451476, epsilon=0.0001);
+    }
+    #[test]
+    fn binomial_approx_cir() {
+        let r=0.03 as f64;
+        let sig=0.3;
+        let initial_r=2.0*r.sqrt()/sig;
+        let maturity=1.0;
+        let a=1.0;
+        let b=0.05;
+
+        let alpha_div_sigma=|_t:f64, underlying:f64, _dt:f64, _width:usize| (a*(b-underlying))/(sig*underlying.sqrt());
+        let sigma_pr=|_t:f64, underlying:f64, _dt:f64, _width:usize| (0.5*sig)/underlying.sqrt();
+        let sigma_inv=|_t:f64, x:f64, _dt:f64, _width:usize| sig.powi(2)*x.powi(2)*0.25;
+        let py_off=|_t:f64, _underlying:f64, _dt:f64, _width:usize| 1.0;
+        let disc=|_t:f64, underlying:f64, dt:f64, _width:usize| (-underlying*dt).exp();
+        let price=compute_price_raw(
+            &alpha_div_sigma,
+            &sigma_pr,
+            &sigma_inv,
+            &py_off,
+            &disc,
+            initial_r,
+            maturity,
+            5000,
+            false
+        );
+
+        let bondcir=|r:f64, a:f64, b:f64, sigma:f64, tau:f64|{
+            let h=(a.powi(2)+2.0*sigma.powi(2)).sqrt();
+            let expt=(tau*h).exp()-1.0;
+            let den=2.0*h+(a+h)*expt;
+            let at_t=((2.0*a*b)/(sigma.powi(2)))*(2.0*h*((a+h)*tau*0.5).exp()/den).ln();
+            let bt_t=2.0*expt/den;
+            (at_t-r*bt_t).exp()
+        };
+        assert_abs_diff_eq!(price, bondcir(r, a, b, sig, maturity), epsilon=0.0001);
     }
 }
