@@ -19,6 +19,6 @@ Requires 4 functions:
 
 To demonstrate the flexibility, the tests compute the Black Scholes model price and a bond price under a CIR process.
 
-##Speed
+## Speed
 
 This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.
