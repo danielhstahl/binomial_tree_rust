@@ -32,4 +32,7 @@ after_success: |-
   bash <(curl -s https://codecov.io/bash) &&
   echo "Uploaded code coverage"
   cargo doc
-  #cargo publish --token "$CARGO_API" --allow-dirty
+  cargo publish --token "$CARGO_API" --allow-dirty
+env:
+  matrix:
+    secure: MOXRzdDkdfEIvN+4e9gHrAx2bV2HTYUgdVkw6E2YCzRkepki30P9W5ZWe9EM5pR326E5CXB9q8BMb13xN02O2W138iDQlkyHWLiRqFsjILiVoCHrAXX6GL4sfb60oJOi/tmToU74uoX9MWKdOlXgk4AQgrGFMEDfzIcHwrJv9LIXuoTGnNDU9NtZH/HOZM+BspbX7Rh9rH7id+a6+FbmVOhk2xorh58bks+jf0JFpK2I2gpJl5j8nIB5m5M2eJrcL6ZB7gVj+lfVvo1pbro9haC3JsqRL4FFf+Ai7vdCSJC0GRkRbq0QEWH9kAq/2o3q6t17fS7Q9YuTtxuGNBH9CnaTCWQGXRD/nkTHShqmhaJmOCMtcNAUJNxWrYP/ZQr+RLjBLF4Gjzpc+aDZjJGKz87AOztJXpCtCrdep+HsYVIsR6SMMkWOxur6+m6K8Idd6xrEYKfMEXyLA3ivrlxOEd7/e4dADkqGqcAZZMF/i178d/6Cbdf1md02tgeWlf2emzRllkIxaX2+v3cPrm4xQwPmUQ2wx/FDCywQKIZUnpV5aExDO8MUsoMG5hQV/m7u2vzprQ3bmvlIQI9RKwSujwWBBICDk5hFnfcGIRZ9q9TEzTC+wwPa3EMrxmjIwDCtXAbtogtgpH6Dzk+0zuEvm3TljSdI9GPbBKu7hbqgsXc=
