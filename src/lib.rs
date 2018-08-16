@@ -99,6 +99,29 @@ pub fn compute_price_raw(
     *track_option_price.first().unwrap()
 }
 
+pub fn compute_price_american(
+    alpha_over_sigma:&Fn(f64, f64, f64, usize)->f64,
+    sigma_prime:&Fn(f64, f64, f64, usize)->f64,
+    sigma_inverse:&Fn(f64, f64, f64, usize)->f64,
+    payoff:&Fn(f64, f64, f64, usize)->f64,
+    discount:&Fn(f64, f64, f64, usize)->f64,
+    y0:f64, //see if this can't be calculated inside.  in theory can be numerically solved for form sigma_inverse and initial underlying
+    maturity:f64,
+    n_time_periods:usize //n=1 for a simple binomial tree with 2 terminal nodes
+)->f64{
+    compute_price_raw(
+        alpha_over_sigma,
+        sigma_prime,
+        sigma_inverse,
+        payoff,
+        discount,
+        y0,
+        maturity,
+        n_time_periods,
+        true
+    )
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -191,5 +214,54 @@ mod tests {
             (at_t-r*bt_t).exp()
         };
         assert_abs_diff_eq!(price, bondcir(r, a, b, sig, maturity), epsilon=0.0001);
+    }
+    #[test]
+    fn american_option_test(){
+        let rate=0.09;
+        let sigma=0.2;
+        let maturity=1.5;
+        let stock:f64=50.0;
+        let strike=55.0;
+        let alpha_div_sigma=|_t:f64, _underlying:f64, _dt:f64, _width:usize| rate/sigma;
+        let sigma_pr=|_t:f64, _underlying:f64, _dt:f64, _width:usize| sigma;
+        let sigma_inv=|_t:f64, x:f64, _dt:f64, _width:usize| (x*sigma).exp();
+        let py_off=|_t:f64, underlying:f64, _dt:f64, _width:usize| if strike>underlying {strike-underlying} else {0.0};
+        let disc=|_t:f64, _underlying:f64, dt:f64, _width:usize| (-rate*dt).exp();
+        let price=compute_price_american(
+            &alpha_div_sigma,
+            &sigma_pr,
+            &sigma_inv,
+            &py_off,
+            &disc,
+            stock.ln()/sigma,
+            maturity,
+            5000
+        );
+        //price comes from http://www.math.columbia.edu/~smirnov/options13.html with days=547
+        assert_abs_diff_eq!(price, 5.627853492616043, epsilon=0.001);
+    }
+    #[test]
+    fn binomial_approx_black_scholes_american() {
+        let r=0.03;
+        let sig=0.3;
+        let s0=50.0 as f64;
+        let maturity=1.0;
+        let strike=50.0;
+        let alpha_div_sigma=|_t:f64, _underlying:f64, _dt:f64, _width:usize| r/sig;
+        let sigma_pr=|_t:f64, _underlying:f64, _dt:f64, _width:usize| sig;
+        let sigma_inv=|_t:f64, x:f64, _dt:f64, _width:usize| (x*sig).exp();
+        let py_off=|_t:f64, underlying:f64, _dt:f64, _width:usize| if strike<underlying {underlying-strike} else {0.0};
+        let disc=|_t:f64, _underlying:f64, dt:f64, _width:usize| (-r*dt).exp();
+        let price=compute_price_american(
+            &alpha_div_sigma,
+            &sigma_pr,
+            &sigma_inv,
+            &py_off,
+            &disc,
+            s0.ln()/sig,
+            maturity,
+            5000
+        );
+        assert_abs_diff_eq!(price, black_scholes::call(s0, strike, r, sig, maturity), epsilon=0.001); //american call and european call should be the same with no dividends
     }
 }
