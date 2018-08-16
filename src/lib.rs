@@ -43,6 +43,16 @@ fn get_height(width:usize, index:usize)->i32{
     (width as i32)-(index as i32)*2
 }
 
+pub fn get_dt(
+    maturity:f64,
+    n_time_periods:usize
+)->f64{
+    maturity/(n_time_periods as f64)
+}
+pub fn get_t(dt:f64, width:usize)->f64{
+    (width as f64)*dt
+}
+
 //while this feels like too many inputs to a function...not sure what else I can do.  but try to cut it down
 pub fn compute_price_raw(
     alpha_over_sigma:&Fn(f64, f64, f64, usize)->f64,
@@ -55,7 +65,7 @@ pub fn compute_price_raw(
     n_time_periods:usize, //n=1 for a simple binomial tree with 2 terminal nodes
     is_american:bool
 )->f64{
-    let dt=maturity/(n_time_periods as f64);
+    let dt=get_dt(maturity, n_time_periods);
     let sqrt_dt=dt.sqrt();
 
     let mut track_option_price:Vec<f64>=(0..(n_time_periods+1)).map(|height_index|{
@@ -67,7 +77,7 @@ pub fn compute_price_raw(
     }).collect();
 
     (0..n_time_periods).rev().for_each(|width|{
-        let t=(width as f64)*dt;
+        let t=get_t(dt, width);
         (0..(track_option_price.len()-1)).for_each(|height_index|{
             
             let upper=track_option_price[height_index];
