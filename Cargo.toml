@@ -1,7 +1,12 @@
 [package]
 name = "binomial_tree"
 version = "0.1.0"
-authors = ["b0gx3 <daniel.stahl@regions.com>"]
+authors = ["Daniel Stahl <danstahl1138@gmail.com>"]
+homepage = "https://github.com/phillyfan1138/binomial_tree_rust"
+repository = "https://github.com/phillyfan1138/binomial_tree_rust"
+readme = "README.md"
+license = "MIT"
+description = "A generic binomial pricing tree for options"
 
 [dependencies]
 
