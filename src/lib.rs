@@ -49,7 +49,7 @@ pub fn get_dt(
 )->f64{
     maturity/(n_time_periods as f64)
 }
-pub fn get_t(dt:f64, width:usize)->f64{
+pub fn get_t(width:usize, dt:f64)->f64{
     (width as f64)*dt
 }
 
@@ -58,7 +58,7 @@ pub fn get_all_t(
     n_time_periods:usize
 )->Vec<f64>{
     let dt=get_dt(maturity, n_time_periods);
-    (0..n_time_periods).map(|index|get_t(dt, index)).collect()
+    (0..n_time_periods).map(|index|get_t(index, dt)).collect()
 }
 
 //while this feels like too many inputs to a function...not sure what else I can do.  but try to cut it down
@@ -85,7 +85,7 @@ pub fn compute_price_raw(
     }).collect();
 
     (0..n_time_periods).rev().for_each(|width|{
-        let t=get_t(dt, width);
+        let t=get_t(width, dt);
         (0..(track_option_price.len()-1)).for_each(|height_index|{
             
             let upper=track_option_price[height_index];
