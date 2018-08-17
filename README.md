@@ -21,4 +21,4 @@ To demonstrate the flexibility, the tests compute the Black Scholes model price 
 
 ## Speed
 
-This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.
+This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.  To run with benchmarks, use `cargo test --release -- --nocapture`.
