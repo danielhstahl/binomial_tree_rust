@@ -53,6 +53,14 @@ pub fn get_t(dt:f64, width:usize)->f64{
     (width as f64)*dt
 }
 
+pub fn get_all_t(
+    maturity:f64,
+    n_time_periods:usize
+)->Vec<f64>{
+    let dt=get_dt(maturity, n_time_periods);
+    (0..n_time_periods).map(|index|get_t(dt, index)).collect()
+}
+
 //while this feels like too many inputs to a function...not sure what else I can do.  but try to cut it down
 pub fn compute_price_raw(
     alpha_over_sigma:&Fn(f64, f64, f64, usize)->f64,
