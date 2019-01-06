@@ -153,7 +153,7 @@ pub fn compute_price_raw(
         payoff(maturity, underlying, dt, n_time_periods)
     }).collect();
     get_all_t(maturity, n_time_periods).enumerate().rev().for_each(|(width, t)|{
-        (0..(track_option_price.len()-1)).for_each(|height_index|{
+        (0..(width+1)).for_each(|height_index|{
             
             let upper=track_option_price[height_index];
             let lower=track_option_price[height_index+1];
