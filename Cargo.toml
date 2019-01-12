@@ -1,6 +1,6 @@
 [package]
 name = "binomial_tree"
-version = "0.3.5"
+version = "0.3.6"
 authors = ["Daniel Stahl <danstahl1138@gmail.com>"]
 homepage = "https://github.com/phillyfan1138/binomial_tree_rust"
 repository = "https://github.com/phillyfan1138/binomial_tree_rust"
@@ -13,3 +13,8 @@ description = "A generic binomial pricing tree for options"
 [dev-dependencies]
 black_scholes = "0.2.3"
 approx = "0.2.0"
+bencher = "0.1.5"
+
+[[bench]]
+name = "bench"
+harness = false
