@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: rust-1-32
 
@@ -37,3 +38,9 @@ kind: secret
 data:
   cargo_api: Iapx-i1uzFtK5YfeWKhR0GtDQafxaVDanibrytInGnbOI6ekwNhYq0yHht4cWJwofKpvSqLVNQf-WK3HUJkXmEVN32EtyxI=
   code_cov_token: PlpcKx3XFa_byjorSH2sJYjbekYgc1OGjkX1Kypzy9GhkcbWzzUYN_6Lexl_9Stml4Lt1l6YxxbLLHREOqz2xzpN9-seq4o=
+
+---
+kind: signature
+hmac: 621165bb8563fa309a573a8fbafe12a37b842c72d897dbc269553580e3c2c068
+
+...
