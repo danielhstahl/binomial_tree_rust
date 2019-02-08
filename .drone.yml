@@ -3,10 +3,11 @@ name: rust-1-32
 
 steps:
 - name: test
-  #image: xd009642/tarpaulin
-  image: rustlang/rust:nightly
+  image: xd009642/tarpaulin:latest
+  privileged: true
+  #image: rustlang/rust:nightly
   commands:
-  - RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
+  #- RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
   - cargo build --verbose --all
   - cargo test --verbose --all
   - cargo tarpaulin --out Xml
