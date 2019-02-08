@@ -3,20 +3,20 @@ name: rust-1-32
 
 steps:
 - name: test
-  image: rustlang/rust:nightly
+  image: xd009642/tarpaulin
   commands:
-  - RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
+  #- RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
   - cargo build --verbose --all
   - cargo test --verbose --all
   - cargo tarpaulin --out Xml
-  - cargo bench
+  
 
 - name: coverage
   image: plugins/codecov
   settings:
     #token: your-codecov-token
     files:
-     - *.xml
+     - "*.xml"
 
 - name: doc
   image: rust:latest
@@ -24,6 +24,7 @@ steps:
     CARGO_API:
       from_secret: cargo_api
   commands:
+  - cargo bench
   - cargo build --verbose --all
   - cargo doc
   - cargo publish --token "$CARGO_API" --allow-dirty
