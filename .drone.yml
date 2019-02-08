@@ -1,0 +1,24 @@
+kind: pipeline
+name: rust-1-32
+
+steps:
+- name: test
+  image: rustlang/rust:nightly
+  environment:
+    CARGO_API:
+      from_secret: cargo_api
+  commands:
+  - RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
+  - cargo build --verbose --all
+  - cargo test --verbose --all
+  - cargo tarpaulin --out Xml
+  - cargo bench
+  - bash <(curl -s https://codecov.io/bash)
+  - cargo doc
+  - cargo publish --token "$CARGO_API" --allow-dirty
+
+---
+kind: secret
+
+data:
+  cargo_api: Iapx-i1uzFtK5YfeWKhR0GtDQafxaVDanibrytInGnbOI6ekwNhYq0yHht4cWJwofKpvSqLVNQf-WK3HUJkXmEVN32EtyxI=
