@@ -11,12 +11,6 @@
 //! the inverse function of the indefinite integral of 1/sigma(y, t) 
 //! with respect to y.
 
-#[cfg(test)]
-extern crate black_scholes;
-#[macro_use]
-#[cfg(test)]
-extern crate approx;
-
 fn between_zero_and_one(v:f64)->f64{
     if v>1.0{1.0} else if v<0.0 {0.0} else {v}
 }
@@ -240,6 +234,7 @@ pub fn compute_price_american(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::*;
     #[test]
     fn binomial_approx_black_scholes() {
         let r=0.03;
