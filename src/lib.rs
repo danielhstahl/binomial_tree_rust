@@ -1,14 +1,14 @@
-//! Binomial tree approach to pricing options.  This approach is 
-//! extremely general.  It allows pricing of any style option when 
+//! Binomial tree approach to pricing options.  This approach is
+//! extremely general.  It allows pricing of any style option when
 //! the underlying is a 1-dimensional diffusion.  Currently only
-//! European and American optionality is provided but it isn't 
+//! European and American optionality is provided but it isn't
 //! difficult to add Bermudan optionality.  The approach works
 //! by transforming a diffusion into a pure Brownian component
 //! and building a tree off the pure Browning component.  Given
 //! a diffusion dX=alpha(X, t)dt+sigma(X, t)dW, the user must
 //! specify the function alpha(X, t)/sigma(X, t), the function
 //! sigma'(X, t) (the derivative of sigma with respect to X), and
-//! the inverse function of the indefinite integral of 1/sigma(y, t) 
+//! the inverse function of the indefinite integral of 1/sigma(y, t)
 //! with respect to y.
 
 fn between_zero_and_one(v:f64)->f64{
@@ -53,7 +53,7 @@ fn get_height(width:usize, index:usize)->i32{
 
 /// Returns increment of t between time steps
 /// # Examples
-/// 
+///
 /// ```
 /// let maturity = 5.0;
 /// let n_time_periods = 400;
@@ -67,7 +67,7 @@ pub fn get_dt(
 }
 /// Returns t at some time step
 /// # Examples
-/// 
+///
 /// ```
 /// let dt = 0.01;
 /// let width = 200;
@@ -79,7 +79,7 @@ pub fn get_t(dt:f64, width:usize)->f64{
 
 /// Returns iterator over every t except the maturity
 /// # Examples
-/// 
+///
 /// ```
 /// let maturity = 5.0;
 /// let n_time_periods = 400;
@@ -95,7 +95,7 @@ pub fn get_all_t(
 
 /// Returns price using tree method
 /// # Examples
-/// 
+///
 /// ```
 /// //Black Scholes tree
 /// let r:f64 = 0.05;
@@ -126,12 +126,12 @@ pub fn get_all_t(
 /// );
 /// ```
 pub fn compute_price_raw(
-    alpha_over_sigma:&Fn(f64, f64, f64, usize)->f64,
-    sigma_prime:&Fn(f64, f64, f64, usize)->f64,
-    sigma_inverse:&Fn(f64, f64, f64, usize)->f64,
-    payoff:&Fn(f64, f64, f64, usize)->f64,
-    discount:&Fn(f64, f64, f64, usize)->f64,
-    y0:f64, 
+    alpha_over_sigma:&dyn Fn(f64, f64, f64, usize)->f64,
+    sigma_prime:&dyn Fn(f64, f64, f64, usize)->f64,
+    sigma_inverse:&dyn Fn(f64, f64, f64, usize)->f64,
+    payoff:&dyn Fn(f64, f64, f64, usize)->f64,
+    discount:&dyn Fn(f64, f64, f64, usize)->f64,
+    y0:f64,
     maturity:f64,
     n_time_periods:usize, //n=1 for a simple binomial tree with 2 terminal nodes
     is_american:bool
@@ -143,12 +143,12 @@ pub fn compute_price_raw(
         let height=get_height(n_time_periods, height_index);
         let w=compute_skeleton(y0, height, sqrt_dt);
         let underlying=sigma_inverse(maturity, w, dt, n_time_periods);
-        
+
         payoff(maturity, underlying, dt, n_time_periods)
     }).collect();
     get_all_t(maturity, n_time_periods).enumerate().rev().for_each(|(width, t)|{
         (0..(width+1)).for_each(|height_index|{
-            
+
             let upper=track_option_price[height_index];
             let lower=track_option_price[height_index+1];
 
@@ -159,7 +159,7 @@ pub fn compute_price_raw(
             let expectation=compute_expectation(
                 compute_p(
                     alpha_over_sigma(t, underlying, dt, width),
-                    sigma_prime(t, underlying, dt, width), 
+                    sigma_prime(t, underlying, dt, width),
                     sqrt_dt
                 ),
                 upper,
@@ -179,7 +179,7 @@ pub fn compute_price_raw(
 }
 /// Returns American option price using tree method
 /// # Examples
-/// 
+///
 /// ```
 /// //Black Scholes tree
 /// let r:f64 = 0.05;
@@ -208,12 +208,12 @@ pub fn compute_price_raw(
 /// );
 /// ```
 pub fn compute_price_american(
-    alpha_over_sigma:&Fn(f64, f64, f64, usize)->f64,
-    sigma_prime:&Fn(f64, f64, f64, usize)->f64,
-    sigma_inverse:&Fn(f64, f64, f64, usize)->f64,
-    payoff:&Fn(f64, f64, f64, usize)->f64,
-    discount:&Fn(f64, f64, f64, usize)->f64,
-    y0:f64, 
+    alpha_over_sigma:&dyn Fn(f64, f64, f64, usize)->f64,
+    sigma_prime:&dyn Fn(f64, f64, f64, usize)->f64,
+    sigma_inverse:&dyn Fn(f64, f64, f64, usize)->f64,
+    payoff:&dyn Fn(f64, f64, f64, usize)->f64,
+    discount:&dyn Fn(f64, f64, f64, usize)->f64,
+    y0:f64,
     maturity:f64,
     n_time_periods:usize //n=1 for a simple binomial tree with 2 terminal nodes
 )->f64{
