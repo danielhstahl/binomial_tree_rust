@@ -1,6 +1,5 @@
 language: rust
 sudo: required
-
 addons:
   apt:
     packages:
@@ -12,12 +11,10 @@ addons:
     - binutils-dev
     - libiberty-dev
     - gnuplot
-
 before_cache: |
   if [ "$TRAVIS_RUST_VERSION" = "nightly" ]; then
     RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
   fi
-
 after_success: |
   if [ "$TRAVIS_RUST_VERSION" = "nightly" ]; then
     cargo tarpaulin --out Xml
@@ -28,20 +25,14 @@ after_success: |
     cargo doc
     cargo publish --token "$CARGO_API" --allow-dirty
   fi
-
-#env:
-#  matrix:
-#    secure: MOXRzdDkdfEIvN+4e9gHrAx2bV2HTYUgdVkw6E2YCzRkepki30P9W5ZWe9EM5pR326E5CXB9q8BMb13xN02O2W138iDQlkyHWLiRqFsjILiVoCHrAXX6GL4sfb60oJOi/tmToU74uoX9MWKdOlXgk4AQgrGFMEDfzIcHwrJv9LIXuoTGnNDU9NtZH/HOZM+BspbX7Rh9rH7id+a6+FbmVOhk2xorh58bks+jf0JFpK2I2gpJl5j8nIB5m5M2eJrcL6ZB7gVj+lfVvo1pbro9haC3JsqRL4FFf+Ai7vdCSJC0GRkRbq0QEWH9kAq/2o3q6t17fS7Q9YuTtxuGNBH9CnaTCWQGXRD/nkTHShqmhaJmOCMtcNAUJNxWrYP/ZQr+RLjBLF4Gjzpc+aDZjJGKz87AOztJXpCtCrdep+HsYVIsR6SMMkWOxur6+m6K8Idd6xrEYKfMEXyLA3ivrlxOEd7/e4dADkqGqcAZZMF/i178d/6Cbdf1md02tgeWlf2emzRllkIxaX2+v3cPrm4xQwPmUQ2wx/FDCywQKIZUnpV5aExDO8MUsoMG5hQV/m7u2vzprQ3bmvlIQI9RKwSujwWBBICDk5hFnfcGIRZ9q9TEzTC+wwPa3EMrxmjIwDCtXAbtogtgpH6Dzk+0zuEvm3TljSdI9GPbBKu7hbqgsXc=
-
 matrix:
   include:
-    - rust: stable
-      env:
-        - secure: MOXRzdDkdfEIvN+4e9gHrAx2bV2HTYUgdVkw6E2YCzRkepki30P9W5ZWe9EM5pR326E5CXB9q8BMb13xN02O2W138iDQlkyHWLiRqFsjILiVoCHrAXX6GL4sfb60oJOi/tmToU74uoX9MWKdOlXgk4AQgrGFMEDfzIcHwrJv9LIXuoTGnNDU9NtZH/HOZM+BspbX7Rh9rH7id+a6+FbmVOhk2xorh58bks+jf0JFpK2I2gpJl5j8nIB5m5M2eJrcL6ZB7gVj+lfVvo1pbro9haC3JsqRL4FFf+Ai7vdCSJC0GRkRbq0QEWH9kAq/2o3q6t17fS7Q9YuTtxuGNBH9CnaTCWQGXRD/nkTHShqmhaJmOCMtcNAUJNxWrYP/ZQr+RLjBLF4Gjzpc+aDZjJGKz87AOztJXpCtCrdep+HsYVIsR6SMMkWOxur6+m6K8Idd6xrEYKfMEXyLA3ivrlxOEd7/e4dADkqGqcAZZMF/i178d/6Cbdf1md02tgeWlf2emzRllkIxaX2+v3cPrm4xQwPmUQ2wx/FDCywQKIZUnpV5aExDO8MUsoMG5hQV/m7u2vzprQ3bmvlIQI9RKwSujwWBBICDk5hFnfcGIRZ9q9TEzTC+wwPa3EMrxmjIwDCtXAbtogtgpH6Dzk+0zuEvm3TljSdI9GPbBKu7hbqgsXc=
-        - secure: oaGT9X2ayF3Y68zoTTzVe6PsEh6BTtdMfywabZG8n423g3fPNongtFxia+IT9TxZVpvqi7zd8zO7IdxluaQ0KIPUVXndba/5z0kplvSEUgTx+SYpMONR+No/jmlfLlOa+lxeOMxC75PBzMraMCI/Zy+DvliEPn8v3XXE5b2nkubuWj2TJTO5kaGCQnVijr5JUFiDFMqh2/CtV9XOiVofYIYxUqVr3yv5iJM/ws9JEo44ekdrUy2C2DRjEeOqNAga71cGvcxHtlhlsOh2e/wSgqOuxo23vz1iGdb48lxPQS9XesPLloiewdlHFbQpHLe8b3j8IZkKNeS+0E6E2C8pwYD2e2FbzAyZ+rzkUTjTrvlNfZSqm1M5+pObwMgGf4tYZ2S3G9g7crg7HJ0qF1+XKrImownqv1cohu7uq6cyKMLngb37IOrArWjOWb2YaLRGXH9PQOQEPxSo5yE02g0YNxoOQXjNtU2tlCgeLgp0JII5VzWxNEH0tI/F/gNUh21Kx5bMiROgxlk+qyqfK3xhGFAiKA26q8udE3+1QsYhm1ek/DX3hHhj3604deu7XFK/EMUmhPk/rMeWBRejNLjDmCe1fnGiNqIuLIWI2dX+4/SYRwsoQ4Je++4soc4m/SRZC/jN37Vx4jH4p/YasejMfeNZ9mim6D17d7Ew5Djb8II=
-    - rust: nightly
-    - rust: beta
-
+  - rust: stable
+    env:
+    - secure: MOXRzdDkdfEIvN+4e9gHrAx2bV2HTYUgdVkw6E2YCzRkepki30P9W5ZWe9EM5pR326E5CXB9q8BMb13xN02O2W138iDQlkyHWLiRqFsjILiVoCHrAXX6GL4sfb60oJOi/tmToU74uoX9MWKdOlXgk4AQgrGFMEDfzIcHwrJv9LIXuoTGnNDU9NtZH/HOZM+BspbX7Rh9rH7id+a6+FbmVOhk2xorh58bks+jf0JFpK2I2gpJl5j8nIB5m5M2eJrcL6ZB7gVj+lfVvo1pbro9haC3JsqRL4FFf+Ai7vdCSJC0GRkRbq0QEWH9kAq/2o3q6t17fS7Q9YuTtxuGNBH9CnaTCWQGXRD/nkTHShqmhaJmOCMtcNAUJNxWrYP/ZQr+RLjBLF4Gjzpc+aDZjJGKz87AOztJXpCtCrdep+HsYVIsR6SMMkWOxur6+m6K8Idd6xrEYKfMEXyLA3ivrlxOEd7/e4dADkqGqcAZZMF/i178d/6Cbdf1md02tgeWlf2emzRllkIxaX2+v3cPrm4xQwPmUQ2wx/FDCywQKIZUnpV5aExDO8MUsoMG5hQV/m7u2vzprQ3bmvlIQI9RKwSujwWBBICDk5hFnfcGIRZ9q9TEzTC+wwPa3EMrxmjIwDCtXAbtogtgpH6Dzk+0zuEvm3TljSdI9GPbBKu7hbqgsXc=
+    - secure: BUZMB5dY2wEnpTp2wmTTcVsBJ+bryxqtzK0FqA2n44Ja5iKePuWBToVofGoOI7okX8SNAmQXA63EFBbbkHioFaPomL7VLc1sPhrtuxLMOQLdV2TC/5iUYqdOwPjrlGfkqi9OCLVADiyZo6l2Oo0XyLHzl/W4AgF/I1SmArY3JilQOMkVI3iPuXtVY+rIKGkcpywMWG6NSnGGAxWu2OG8C/snCcBhs0VorIHtgjPn8UQX6qE345ewveva0dhoMX8VpmM297VfDSFBc1QJ6O8ETA1NGFlDnY2YoULOuY9JcwI+nKPwdv3agfBspLYUBx8mWGbnIGxp6AOLx4YYJ8NYknM0xUYRgatxo7uGMqA6l1rXsDrQL1472tTJL1KTv4as7careUkKMNizCNVQXtx+YdmytSoFvqTJ7cfDMAV7zMaDBXCnMCHJCEMWaWx9gTljuXaAXaKJLSog9aL+8JNN0A4E72Ys6U/Bze/CaH8Uv1H4dfobPoOyhR+AuwvoGdOEmJ2mwxx+v06I+fnmLYNXF0Gy3pSApp0uNrtOhyBsZ9f/I7ghUQTDFyr7Ek/CyBTb4kwbbAl+rK6NK1psWVM/WIt7NwyAqLMLRQtUwEbBUmGsqpvwVKd0gk5YeqEsKr4p/7K4Dy+qfV4EkDCJsAVR9eha6NiQhpxiPDBhk4aiVwo=
+  - rust: nightly
+  - rust: beta
 deploy:
   provider: pages
   skip_cleanup: true
