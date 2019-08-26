@@ -22,7 +22,7 @@ fn bench_black_scholes_american(c: &mut Criterion) {
                     black_scholes::call(s0, strike, r, sig, maturity)
                 })
             },
-            vec![100, 500, 1000, 5000]
+            vec![100, 500, 1000]
         ).with_function("binomial", move |b, i|{
             b.iter(||{
                 binomial_tree::compute_price_american(
