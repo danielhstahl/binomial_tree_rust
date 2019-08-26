@@ -11,10 +11,10 @@ edition = "2018"
 [dependencies]
 
 [dev-dependencies]
-black_scholes = "0.2.3"
+black_scholes = "0.5.0"
 approx = "0.2.0"
-bencher = "0.1.5"
+criterion = "0.2"
 
 [[bench]]
-name = "bench"
+name = "binomial_tree"
 harness = false
