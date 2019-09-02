@@ -2,8 +2,8 @@
 | :---------------: | :-------------------: |
 | ![lin-badge]      | ![cov-badge]          |
 
-[lin-badge]: https://travis-ci.org/phillyfan1138/binomial_tree_rust.svg?branch=master "Travis build status"
-[lin-link]:  https://travis-ci.org/phillyfan1138/binomial_tree_rust "Travis build status"
+[lin-badge]: https://github.com/phillyfan1138/binomial_tree_rust/workflows/Rust/badge.svg
+[lin-link]:  https://github.com/phillyfan1138/binomial_tree_rust/actions
 [cov-badge]: https://codecov.io/gh/phillyfan1138/binomial_tree_rust/branch/master/graph/badge.svg
 [cov-link]:  https://codecov.io/gh/phillyfan1138/binomial_tree_rust
 
@@ -21,4 +21,4 @@ To demonstrate the flexibility, the tests compute the Black Scholes model price 
 
 ## Speed
 
-This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.  Benchmarks at https://phillyfan1138.github.io/binomial_tree_rust/report.
+This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.  Benchmarks at https://phillyfan1138.github.io/binomial_tree_rust/report/index.html.
