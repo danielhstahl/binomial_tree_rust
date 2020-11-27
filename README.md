@@ -2,10 +2,10 @@
 | :---------------: | :-------------------: |
 | ![lin-badge]      | ![cov-badge]          |
 
-[lin-badge]: https://github.com/phillyfan1138/binomial_tree_rust/workflows/Rust/badge.svg
-[lin-link]:  https://github.com/phillyfan1138/binomial_tree_rust/actions
-[cov-badge]: https://codecov.io/gh/phillyfan1138/binomial_tree_rust/branch/master/graph/badge.svg
-[cov-link]:  https://codecov.io/gh/phillyfan1138/binomial_tree_rust
+[lin-badge]: https://github.com/danielhstahl/binomial_tree_rust/workflows/Rust/badge.svg
+[lin-link]:  https://github.com/danielhstahl/binomial_tree_rust/actions
+[cov-badge]: https://codecov.io/gh/danielhstahl/binomial_tree_rust/branch/master/graph/badge.svg
+[cov-link]:  https://codecov.io/gh/danielhstahl/binomial_tree_rust
 
 ## Binomial Tree Option Calculator
 
@@ -21,4 +21,4 @@ To demonstrate the flexibility, the tests compute the Black Scholes model price 
 
 ## Speed
 
-This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.  Benchmarks at https://phillyfan1138.github.io/binomial_tree_rust/report/index.html.
+This library takes roughly .4 seconds compared to .7 seconds for my C++ library for a 5000 step European call option.  Benchmarks at https://danielhstahl.github.io/binomial_tree_rust/report/index.html.
