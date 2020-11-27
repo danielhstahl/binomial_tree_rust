@@ -13,7 +13,7 @@ edition = "2018"
 [dev-dependencies]
 black_scholes = "0.5.0"
 approx = "0.2.0"
-criterion = "0.2"
+criterion = "0.3"
 
 [[bench]]
 name = "binomial_tree"
