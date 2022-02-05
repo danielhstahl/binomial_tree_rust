@@ -117,11 +117,11 @@ pub fn get_all_t(
 /// );
 /// ```
 pub fn compute_price_raw(
-    alpha_over_sigma: &dyn Fn(f64, f64, f64, usize) -> f64,
-    sigma_prime: &dyn Fn(f64, f64, f64, usize) -> f64,
-    sigma_inverse: &dyn Fn(f64, f64, f64, usize) -> f64,
-    payoff: &dyn Fn(f64, f64, f64, usize) -> f64,
-    discount: &dyn Fn(f64, f64, f64, usize) -> f64,
+    alpha_over_sigma: &impl Fn(f64, f64, f64, usize) -> f64,
+    sigma_prime: &impl Fn(f64, f64, f64, usize) -> f64,
+    sigma_inverse: &impl Fn(f64, f64, f64, usize) -> f64,
+    payoff: &impl Fn(f64, f64, f64, usize) -> f64,
+    discount: &impl Fn(f64, f64, f64, usize) -> f64,
     y0: f64,
     maturity: f64,
     n_time_periods: usize, //n=1 for a simple binomial tree with 2 terminal nodes
@@ -203,11 +203,11 @@ pub fn compute_price_raw(
 /// );
 /// ```
 pub fn compute_price_american(
-    alpha_over_sigma: &dyn Fn(f64, f64, f64, usize) -> f64,
-    sigma_prime: &dyn Fn(f64, f64, f64, usize) -> f64,
-    sigma_inverse: &dyn Fn(f64, f64, f64, usize) -> f64,
-    payoff: &dyn Fn(f64, f64, f64, usize) -> f64,
-    discount: &dyn Fn(f64, f64, f64, usize) -> f64,
+    alpha_over_sigma: &impl Fn(f64, f64, f64, usize) -> f64,
+    sigma_prime: &impl Fn(f64, f64, f64, usize) -> f64,
+    sigma_inverse: &impl Fn(f64, f64, f64, usize) -> f64,
+    payoff: &impl Fn(f64, f64, f64, usize) -> f64,
+    discount: &impl Fn(f64, f64, f64, usize) -> f64,
     y0: f64,
     maturity: f64,
     n_time_periods: usize, //n=1 for a simple binomial tree with 2 terminal nodes
