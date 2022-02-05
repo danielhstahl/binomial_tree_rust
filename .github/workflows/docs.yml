@@ -14,8 +14,7 @@ jobs:
     - name: Benchmarks
       uses: phillyfan1138/gnuplot-action@master
     - name: Deploy pages
-      uses: JamesIves/github-pages-deploy-action@master
+      uses: JamesIves/github-pages-deploy-action@4.1.4
       env: 
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: target/criterion
+        branch: gh-pages
+        folder: target/criterion
